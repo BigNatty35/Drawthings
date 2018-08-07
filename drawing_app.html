@@ -7,11 +7,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
   <script src="main.js"></script>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
 </head>
 <body>
-  <h1>HEY HEY!!!! HEY!!
-  </h1>
   <canvas id = "a" width="800" height="500"></canvas>
-  <script type="text/javascript"></script>
+  <script type="text/javascript">
+    let size = prompt("enter your brush size");
+    let canvas = document.getElementById('a');
+    let md = false;
+    // when the mouse clicks down, the down function is called, turning "md" to true.
+    canvas.addEventListener('mousedown', down);
+    // when the mouse is released the toggledraw function is called, turning "md" back to false
+    canvas.addEventListener('mouseup', toggledraw);
+    canvas.addEventListener('mousemove', function(evt) {
+      let mousePos = getMousePos(canvas, evt);
+      let posx = mousePos.x;
+      let posy = mousePos.y;
+      draw(canvas, posx, posy);
+    }
+  );
+    function down() {
+      md = true;
+    };
+
+    function toggledraw() {
+      md = false;
+      canvas.style.cursor = "default";
+    };
+
+    function getMousePos(canvas, evt) {
+      let rect = canvas.getBoundingClientRect();
+      return {
+        x:evt.clientX - rect.left,
+        y:evt.clientY - rect.top
+      };
+    }
+
+    function draw(canvas, posx, posy) {
+      let context = canvas.getContext('2d');
+      if (md) {
+        canvas.style.cursor = "pointer";
+        context.fillRect(posx, posy, size, size);
+      }
+    }
+
+  </script>
+  <button onclick="window.location.reload()">reset</button>
 </body>
 </html>
